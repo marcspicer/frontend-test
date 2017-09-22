@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { fetchLocation } from '../actions'
+import GoogleMap from '../components/GoogleMap'
 
 class App extends Component {
   constructor() {
@@ -14,15 +15,17 @@ class App extends Component {
     dispatch: PropTypes.func.isRequired
   }
 
-  componentDidMount() {
-    const { dispatch } = this.props
-    dispatch(fetchLocation("Tronto ON canada"))
-  }
+  // componentDidMount() {
+  //   const { dispatch } = this.props
+  //   dispatch(fetchLocation("Tronto ON canada"))
+  // }
 
   render() {
     console.log(this.props);
     return (
-      <div>Comp</div>
+      <div className="wrapper">
+        <GoogleMap />
+      </div>
     );
   }
 }
