@@ -1,4 +1,4 @@
-My Project
+Frontend Test Project
 ---
 
 Welcome.
