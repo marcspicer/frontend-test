@@ -11,15 +11,15 @@ class GooglePlaces extends Component {
   componentWillReceiveProps = (nextProps) => {
     const { map } = nextProps;
     if(map) {
-      this.directionsService = new google.maps.DirectionsService;
+      this.directionsService = new google.maps.DirectionsService();
       this.directionsDisplay = new google.maps.DirectionsRenderer({
         draggable: true,
         map: map,
       });
       this.directionsDisplay.setMap(map);
       this.directionsDisplay.addListener('directions_changed', () => {
-          this.computeTotalDistance(this.directionsDisplay.getDirections());
-        });
+        this.computeTotalDistance(this.directionsDisplay.getDirections());
+      });
       const addresses = { address1: {}, address2: {} };
       const searchBoxArray = Object.keys(addresses).map((key) => {
         const address = addresses[`${key}`];
@@ -72,8 +72,9 @@ class GooglePlaces extends Component {
               bounds.extend(place.geometry.location);
             }
           });
-          console.log(searchBoxArray);
+
           if(Object.keys(searchBoxArray[0].marker).length > 0 && Object.keys(searchBoxArray[1].marker).length>0){
+            console.log('Call Service');
             const origin = new google.maps.LatLng(searchBoxArray[0].marker.position.lat(), searchBoxArray[0].marker.position.lng());
             const destination = new google.maps.LatLng(searchBoxArray[1].marker.position.lat(), searchBoxArray[1].marker.position.lng());
             this.calculateAndDisplayRoute(origin, destination, searchBoxArray);
@@ -108,14 +109,10 @@ class GooglePlaces extends Component {
       if (status === 'OK') {
         searchBoxArray[0].marker.setMap(null);
         searchBoxArray[1].marker.setMap(null);
-        for (var i = 0, len = response.routes.length; i < len; i++) {
-          const {map} = this.props;
-              new google.maps.DirectionsRenderer({
-                  map: map,
-                  directions: response,
-                  routeIndex: i
-              });
-          }
+        const {map} = this.props;
+        //for (var i = 0, len = response.routes.length; i < len; i++) {
+              this.directionsDisplay.setDirections(response);
+          //}
       } else {
         window.alert('Directions request failed due to ' + status);
       }
