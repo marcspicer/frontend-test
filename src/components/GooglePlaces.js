@@ -43,6 +43,7 @@ class GooglePlaces extends Component {
           const places = elem.searchBox.getPlaces();
 
           if (places.length == 0) {
+            alert('No place found')
             return;
           }
 
@@ -51,7 +52,8 @@ class GooglePlaces extends Component {
           }
           // For each place, get the icon, name and location.
           var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
+          //places.forEach(function(place) {
+          const place = places[0];
             if (!place.geometry) {
               console.log("Returned place contains no geometry");
               return;
@@ -71,15 +73,15 @@ class GooglePlaces extends Component {
             } else {
               bounds.extend(place.geometry.location);
             }
-          });
+        //});
 
-          if(Object.keys(searchBoxArray[0].marker).length > 0 && Object.keys(searchBoxArray[1].marker).length>0){
-            console.log('Call Service');
-            const origin = new google.maps.LatLng(searchBoxArray[0].marker.position.lat(), searchBoxArray[0].marker.position.lng());
-            const destination = new google.maps.LatLng(searchBoxArray[1].marker.position.lat(), searchBoxArray[1].marker.position.lng());
-            this.calculateAndDisplayRoute(origin, destination, searchBoxArray);
-          }
-          map.fitBounds(bounds);
+        if(Object.keys(searchBoxArray[0].marker).length > 0 && Object.keys(searchBoxArray[1].marker).length>0){
+          console.log('Call Service');
+          const origin = new google.maps.LatLng(searchBoxArray[0].marker.position.lat(), searchBoxArray[0].marker.position.lng());
+          const destination = new google.maps.LatLng(searchBoxArray[1].marker.position.lat(), searchBoxArray[1].marker.position.lng());
+          this.calculateAndDisplayRoute(origin, destination, searchBoxArray);
+        }
+        map.fitBounds(bounds);
         });
         return elem;
       });
